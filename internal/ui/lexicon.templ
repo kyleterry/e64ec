@@ -4,9 +4,18 @@ import "fmt"
 
 templ LexiconIndex(site Site, view LexiconView) {
 	@Layout(site, "terms") {
-		<section class="lexicon">
-			<h1>terms</h1>
-			<ul class="lexicon-list">
+		<section id="lexicon">
+			if view.Page != nil && view.Page.Banner != "" {
+				<figure>
+					<img src={ view.Page.Banner } alt=""/>
+				</figure>
+			}
+			if view.Page != nil && view.Page.Title != "" {
+				<h1>{ view.Page.Title }</h1>
+			} else {
+				<h1>terms</h1>
+			}
+			<ul id="lexicon-list">
 				for _, e := range view.Entries {
 					<li>
 						<a href={ templ.SafeURL(e.URL) }>{ e.Canonical }</a>

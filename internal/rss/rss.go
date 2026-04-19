@@ -44,7 +44,7 @@ func (b *Builder) Feeds() []Feed {
 }
 
 // Build returns XML for a single feed selected by id.
-func (b *Builder) Build(id string, pages []*content.Page) ([]byte, error) {
+func (b *Builder) Build(id string, pages content.Pages) ([]byte, error) {
 	var feed *Feed
 	for i := range b.feeds {
 		if b.feeds[i].ID == id {
@@ -103,20 +103,28 @@ func (b *Builder) Build(id string, pages []*content.Page) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// DefaultFeeds returns the standard feed set. Presently one feed containing
-// every log entry plus pages that explicitly opt in via `feed: true`.
-func DefaultFeeds() []Feed {
+// DefaultFeeds returns the standard feed set for cfg. Pages opt in via
+// `feed: true` in frontmatter, or by living in any cfg.FeedSections section.
+func DefaultFeeds(cfg *config.Config) []Feed {
+	included := make(map[string]bool, len(cfg.FeedSections))
+	for _, s := range cfg.FeedSections {
+		included[s] = true
+	}
+
 	return []Feed{
 		{
 			ID:          "main",
-			Title:       "e64ec log",
-			Description: "Updates from e64ec.com",
+			Title:       cfg.Title,
+			Description: "Updates from " + cfg.BaseURL,
 			Path:        "feed.xml",
 			Filter: func(p *content.Page) bool {
-				if p.Kind == content.KindLog {
+				if p.Index {
+					return false
+				}
+				if p.Feed {
 					return true
 				}
-				return p.Feed
+				return included[p.Section]
 			},
 		},
 	}

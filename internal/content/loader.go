@@ -88,16 +88,20 @@ func (l *Loader) loadFile(abs string) (*Page, error) {
 		Source:      abs,
 		Title:       fm.Title,
 		Summary:     fm.Summary,
+		Banner:      fm.Banner,
 		Date:        fm.Date,
 		Updated:     fm.Updated,
 		Tags:        fm.Tags,
-		Terms:       normalizeTerms(fm.Terms),
+		Terms:       NormalizeTerms(fm.Terms),
 		IncludeTerm: fm.IncludeTerm,
 		Draft:       fm.Draft,
 		Feed:        fm.Feed,
+		Lexicon:     fm.Lexicon,
+		Sort:        fm.Sort,
 	}
 
-	page.Kind = classify(rel)
+	page.Section = sectionFor(rel)
+	page.Index = isIndexFile(rel)
 	page.URL, page.OutputPath = routeFor(rel, fm.Slug)
 
 	ext := strings.ToLower(filepath.Ext(abs))
@@ -129,22 +133,19 @@ func isContentFile(p string) bool {
 	return false
 }
 
-func classify(rel string) Kind {
-	top, _, _ := strings.Cut(rel, "/")
-	switch top {
-	case "log":
-		return KindLog
-	case "projects":
-		return KindProject
-	case "terms":
-		return KindTerm
-	case rel:
-		if rel == "index.md" || rel == "index.html" {
-			return KindHome
-		}
-		return KindOther
+// sectionFor returns the top-level directory for rel, or "" for root files.
+func sectionFor(rel string) string {
+	top, rest, found := strings.Cut(rel, "/")
+	if !found || rest == "" {
+		return ""
 	}
-	return KindOther
+	return top
+}
+
+// isIndexFile reports whether rel is a directory index (index.md or index.html).
+func isIndexFile(rel string) bool {
+	base := strings.ToLower(path.Base(rel))
+	return base == "index.md" || base == "index.html" || base == "index.htm" || base == "index.markdown"
 }
 
 func routeFor(rel, slug string) (url, outputPath string) {
@@ -171,36 +172,22 @@ func routeFor(rel, slug string) (url, outputPath string) {
 	urlPath += base + "/"
 
 	out := path.Join(strings.TrimPrefix(urlPath, "/"), "index.html")
+
 	return urlPath, out
 }
 
 func deriveTitle(rel string) string {
 	ext := filepath.Ext(rel)
-	base := strings.TrimSuffix(filepath.Base(rel), ext)
-	base = strings.ReplaceAll(base, "-", " ")
-	base = strings.ReplaceAll(base, "_", " ")
-	if base == "" {
-		return rel
+	withoutExt := strings.TrimSuffix(rel, ext)
+	base := path.Base(withoutExt)
+	if base == "index" {
+		parent := path.Base(path.Dir(withoutExt))
+		if parent != "." && parent != "/" && parent != "" {
+			return parent
+		}
 	}
-	return strings.ToUpper(base[:1]) + base[1:]
-}
 
-func normalizeTerms(in []string) []string {
-	out := make([]string, 0, len(in))
-	seen := make(map[string]bool, len(in))
-	for _, t := range in {
-		t = strings.TrimSpace(t)
-		if t == "" {
-			continue
-		}
-		key := strings.ToLower(t)
-		if seen[key] {
-			continue
-		}
-		seen[key] = true
-		out = append(out, t)
-	}
-	return out
+	return base
 }
 
 // NewLoader builds a content loader rooted at root.

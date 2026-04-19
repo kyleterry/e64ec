@@ -1,38 +1,42 @@
 package ui
 
-import "go.e64ec.com/e64ec/internal/content"
-
 templ Page(site Site, view PageView) {
 	@Layout(site, view.Page.Title) {
-		<article class="page">
-			<header class="page-header">
+		<article>
+			if view.Page.Banner != "" {
+				<figure>
+					<img src={ view.Page.Banner } alt=""/>
+				</figure>
+			}
+			<header>
 				<h1>{ view.Page.Title }</h1>
-				if !view.Page.Date.IsZero() {
-					<p class="page-meta">
-						<time datetime={ view.Page.Date.Format("2006-01-02") }>
-							{ view.Page.Date.Format("2006-01-02") }
-						</time>
-						if view.Page.Kind == content.KindTerm {
-							<span class="kind">· term</span>
-						}
-						if view.Page.Kind == content.KindProject {
-							<span class="kind">· project</span>
+				if !view.Page.Date.IsZero() || view.Page.Section != "" {
+					<p id="page-meta">
+						if !view.Page.Date.IsZero() {
+							<time datetime={ view.Page.Date.Format("2006-01-02") }>
+								{ view.Page.Date.Format("2006-01-02") }
+							</time>
 						}
 					</p>
 				}
 				if len(view.Page.Tags) > 0 {
-					<ul class="tags">
+					<ul id="tags">
 						for _, tag := range view.Page.Tags {
 							<li>{ tag }</li>
 						}
 					</ul>
 				}
 			</header>
-			<div class="page-body">
+			<div class="body">
 				@templ.Raw(string(view.Body))
 			</div>
+			if len(view.Children) > 0 {
+				<section id="page-children">
+					@PageList(view.Children)
+				</section>
+			}
 			if len(view.Backlinks) > 0 {
-				<footer class="page-backlinks">
+				<footer>
 					<h2>linked from</h2>
 					<ul>
 						for _, b := range view.Backlinks {

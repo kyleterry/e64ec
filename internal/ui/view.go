@@ -32,22 +32,40 @@ type PageView struct {
 	Page      *content.Page
 	Body      template.HTML
 	Backlinks []*content.Page
+	Children  []*content.Page
 }
 
 // IndexSection is a titled list of pages rendered on an index page.
 type IndexSection struct {
 	Title string
-	Kind  content.Kind
 	Pages []*content.Page
 }
 
 // LexiconView is the view-model for the lexicon index page.
 type LexiconView struct {
+	Page    *content.Page
 	Entries []*lexicon.Entry
 }
 
-// SiteFrom builds a Site from config and a default nav.
-func SiteFrom(cfg *config.Config) Site {
+// SitemapView is the view-model for the HTML sitemap page.
+type SitemapView struct {
+	Nodes []*lexicon.SitemapNode
+}
+
+// SiteFrom builds a Site from config and a derived nav. Nav entries are
+// generated from the unique top-level sections discovered in pages,
+// in alphabetical order with home first and feed last.
+func SiteFrom(cfg *config.Config, pages content.Pages) Site {
+	nav := []NavLink{{Title: "home", URL: "/"}}
+
+	for _, s := range pages.Sections() {
+		nav = append(nav, NavLink{Title: s, URL: "/" + s + "/"})
+	}
+
+	if pages.HasFeed() {
+		nav = append(nav, NavLink{Title: "feed", URL: "/feed.xml"})
+	}
+
 	return Site{
 		Title:       cfg.Title,
 		Description: cfg.Description,
@@ -55,12 +73,6 @@ func SiteFrom(cfg *config.Config) Site {
 		Author:      cfg.Author,
 		Language:    cfg.Language,
 		Now:         cfg.BuildTime,
-		Nav: []NavLink{
-			{Title: "home", URL: "/"},
-			{Title: "log", URL: "/log/"},
-			{Title: "projects", URL: "/projects/"},
-			{Title: "terms", URL: "/terms/"},
-			{Title: "feed", URL: "/feed.xml"},
-		},
+		Nav:         nav,
 	}
 }

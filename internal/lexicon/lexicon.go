@@ -82,9 +82,7 @@ func (l *Lexicon) Link(page *content.Page) (template.HTML, error) {
 	for _, t := range page.Terms {
 		skip[strings.ToLower(t)] = true
 	}
-	if page.Kind == content.KindTerm {
-		skip[strings.ToLower(page.Title)] = true
-	}
+	skip[strings.ToLower(page.Title)] = true
 
 	linked := make(map[string]bool)
 	walk(doc, l, skip, linked, page)
@@ -122,6 +120,88 @@ func (l *Lexicon) WriteCSV(path string) error {
 	}
 
 	return f.Close()
+}
+
+// SitemapNode is a node in the nested sitemap tree.
+type SitemapNode struct {
+	Title    string
+	URL      string
+	Children []*SitemapNode
+}
+
+// SitemapTree returns a single-rooted tree of all lexicon pages, grouped by
+// URL path. Missing ancestor paths are created as placeholder nodes titled
+// after their URL segment. Children are sorted alphabetically by title.
+func (l *Lexicon) SitemapTree() []*SitemapNode {
+	titles := make(map[string]string, len(l.terms))
+	for _, e := range l.terms {
+		if e.URL == "" {
+			continue
+		}
+		if _, ok := titles[e.URL]; ok {
+			continue
+		}
+
+		title := e.Canonical
+		if e.Source != nil && e.Source.Title != "" {
+			title = e.Source.Title
+		}
+		titles[e.URL] = title
+	}
+
+	rootTitle := titles["/"]
+	if rootTitle == "" {
+		rootTitle = "home"
+	}
+
+	root := &SitemapNode{URL: "/", Title: rootTitle}
+	nodes := map[string]*SitemapNode{"/": root}
+
+	urls := make([]string, 0, len(titles))
+	for u := range titles {
+		if u == "/" {
+			continue
+		}
+		urls = append(urls, u)
+	}
+	sort.Strings(urls)
+
+	for _, u := range urls {
+		ensureSitemapPath(u, nodes, titles)
+	}
+
+	sortSitemapChildren(root)
+
+	return []*SitemapNode{root}
+}
+
+func ensureSitemapPath(u string, nodes map[string]*SitemapNode, titles map[string]string) *SitemapNode {
+	if n, ok := nodes[u]; ok {
+		return n
+	}
+
+	parent := content.ParentURL(u)
+	parentNode := ensureSitemapPath(parent, nodes, titles)
+
+	title, ok := titles[u]
+	if !ok {
+		title = content.URLSegment(u)
+	}
+
+	n := &SitemapNode{URL: u, Title: title}
+	nodes[u] = n
+	parentNode.Children = append(parentNode.Children, n)
+
+	return n
+}
+
+func sortSitemapChildren(n *SitemapNode) {
+	sort.Slice(n.Children, func(i, j int) bool {
+		return n.Children[i].Title < n.Children[j].Title
+	})
+	for _, c := range n.Children {
+		sortSitemapChildren(c)
+	}
 }
 
 func (l *Lexicon) writeCSV(w io.Writer) error {
@@ -175,31 +255,11 @@ func New(pages []*content.Page) (*Lexicon, error) {
 
 func collectTerms(p *content.Page) []string {
 	set := []string{p.Title}
-	if p.Kind == content.KindTerm {
-		set = append(set, p.Terms...)
-	}
+	set = append(set, p.Terms...)
 	if p.IncludeTerm != "" {
 		set = append(set, p.IncludeTerm)
 	}
-	return dedupeTerms(set)
-}
-
-func dedupeTerms(in []string) []string {
-	seen := make(map[string]bool, len(in))
-	out := make([]string, 0, len(in))
-	for _, t := range in {
-		t = strings.TrimSpace(t)
-		if t == "" {
-			continue
-		}
-		key := strings.ToLower(t)
-		if seen[key] {
-			continue
-		}
-		seen[key] = true
-		out = append(out, t)
-	}
-	return out
+	return content.NormalizeTerms(set)
 }
 
 func walk(n *html.Node, lex *Lexicon, skip, linked map[string]bool, page *content.Page) {

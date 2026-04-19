@@ -1,9 +1,9 @@
 ---
 title: e64ec
 summary: This site, and its static-site generator.
-date: 2026-04-18
 tags: [go, templ]
 include_term: e64ec
+terms: ["markdown files"]
 ---
 
 `e64ec` is the static-site generator powering this site. It turns a tree of

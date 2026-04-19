@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/a-h/templ"
 
@@ -37,27 +38,18 @@ func main() {
 }
 
 func run(cfg *config.Config) error {
-	pages, err := content.NewLoader(cfg.ContentDir).Load()
+	rawPages, err := content.NewLoader(cfg.ContentDir).Load()
 	if err != nil {
 		return fmt.Errorf("load content: %w", err)
 	}
+	pages := content.Pages(rawPages)
 
 	lex, err := lexicon.New(pages)
 	if err != nil {
 		return fmt.Errorf("build lexicon: %w", err)
 	}
 
-	if cfg.LexiconFile != "" {
-		if err := lex.WriteCSV(cfg.LexiconFile); err != nil {
-			return fmt.Errorf("write lexicon: %w", err)
-		}
-	}
-
-	if err := resetSite(cfg.SiteDir); err != nil {
-		return err
-	}
-
-	site := ui.SiteFrom(cfg)
+	site := ui.SiteFrom(cfg, pages)
 
 	type renderTask struct {
 		p      *content.Page
@@ -73,23 +65,50 @@ func run(cfg *config.Config) error {
 		tasks = append(tasks, renderTask{p: p, linked: linked})
 	}
 
+	if cfg.LexiconFile != "" {
+		if err := lex.WriteCSV(cfg.LexiconFile); err != nil {
+			return fmt.Errorf("write lexicon: %w", err)
+		}
+	}
+
+	childrenByDir := map[string]content.Pages{}
+	for _, p := range pages {
+		parent := content.ParentURL(p.URL)
+		if parent == "" {
+			continue
+		}
+		childrenByDir[parent] = append(childrenByDir[parent], p)
+	}
+
 	for _, task := range tasks {
 		p := task.p
 		outPath := filepath.Join(cfg.SiteDir, filepath.FromSlash(p.OutputPath))
 
-		var backlinks []*content.Page
+		var backlinks content.Pages
 		terms := lex.Entries()
 		for _, e := range terms {
 			if e.URL == p.URL {
 				backlinks = append(backlinks, e.References...)
 			}
 		}
-		backlinks = dedupePages(backlinks)
+		backlinks = backlinks.Dedupe()
+
+		var children content.Pages
+		if p.Index {
+			for _, c := range childrenByDir[p.URL] {
+				if c == p {
+					continue
+				}
+				children = append(children, c)
+			}
+			children.Sort("")
+		}
 
 		view := ui.PageView{
 			Page:      p,
 			Body:      task.linked,
 			Backlinks: backlinks,
+			Children:  children,
 		}
 		if err := writeRendered(outPath, ui.Page(site, view)); err != nil {
 			return err
@@ -104,6 +123,11 @@ func run(cfg *config.Config) error {
 		return err
 	}
 
+	sitemapOut := filepath.Join(cfg.SiteDir, "sitemap", "index.html")
+	if err := writeRendered(sitemapOut, ui.Sitemap(site, ui.SitemapView{Nodes: lex.SitemapTree()})); err != nil {
+		return fmt.Errorf("write sitemap: %w", err)
+	}
+
 	if err := copyAssets(cfg.AssetsDir, filepath.Join(cfg.SiteDir, "assets")); err != nil {
 		return err
 	}
@@ -113,32 +137,65 @@ func run(cfg *config.Config) error {
 	return nil
 }
 
-func writeIndexes(cfg *config.Config, site ui.Site, pages []*content.Page, lex *lexicon.Lexicon) error {
-	log := filterKind(pages, content.KindLog)
-	sortByDateDesc(log)
+// writeIndexes emits a listing page for every directory in the content tree
+// that lacks a user-authored index.md. User-authored index.md with
+// `lexicon: true` in frontmatter triggers lexicon rendering instead of the
+// normal page body.
+func writeIndexes(cfg *config.Config, site ui.Site, pages content.Pages, lex *lexicon.Lexicon) error {
+	userIndexByURL := map[string]*content.Page{}
+	childrenByDir := map[string]content.Pages{}
+	dirs := map[string]bool{}
 
-	projects := filterKind(pages, content.KindProject)
-	sort.Slice(projects, func(i, j int) bool { return projects[i].Title < projects[j].Title })
+	for _, p := range pages {
+		if p.Index {
+			userIndexByURL[p.URL] = p
+			dirs[p.URL] = true
+		}
 
-	if err := writeIndex(cfg, site, "log", "log", filepath.Join(cfg.SiteDir, "log", "index.html"), []ui.IndexSection{
-		{Pages: log},
-	}); err != nil {
-		return err
+		parent := content.ParentURL(p.URL)
+		if parent == "" {
+			continue
+		}
+
+		dirs[parent] = true
+		childrenByDir[parent] = append(childrenByDir[parent], p)
 	}
 
-	if err := writeIndex(cfg, site, "projects", "projects", filepath.Join(cfg.SiteDir, "projects", "index.html"), []ui.IndexSection{
-		{Pages: projects},
-	}); err != nil {
-		return err
+	dirList := make([]string, 0, len(dirs))
+	for d := range dirs {
+		dirList = append(dirList, d)
+	}
+	sort.Strings(dirList)
+
+	for _, dir := range dirList {
+		if idx, ok := userIndexByURL[dir]; ok {
+			if !idx.Lexicon {
+				continue
+			}
+
+			out := filepath.Join(cfg.SiteDir, filepath.FromSlash(idx.OutputPath))
+			if err := writeRendered(out, ui.LexiconIndex(site, ui.LexiconView{Page: idx, Entries: lex.TopEntries(0)})); err != nil {
+				return err
+			}
+
+			continue
+		}
+
+		if dir == "/" {
+			continue
+		}
+
+		items := append(content.Pages(nil), childrenByDir[dir]...)
+		items.Sort("")
+
+		heading := content.URLSegment(dir)
+		out := filepath.Join(cfg.SiteDir, filepath.FromSlash(strings.TrimPrefix(dir, "/")), "index.html")
+		if err := writeRendered(out, ui.Index(site, heading, []ui.IndexSection{{Pages: items}})); err != nil {
+			return err
+		}
 	}
 
-	lexOut := filepath.Join(cfg.SiteDir, "terms", "index.html")
-
-	return writeRendered(lexOut, ui.LexiconIndex(site, ui.LexiconView{Entries: lex.TopEntries(0)}))
-}
-
-func writeIndex(cfg *config.Config, site ui.Site, heading, _ string, outPath string, sections []ui.IndexSection) error {
-	return writeRendered(outPath, ui.Index(site, heading, sections))
+	return nil
 }
 
 func writeRendered(outPath string, c templ.Component) error {
@@ -159,9 +216,9 @@ func writeRendered(outPath string, c templ.Component) error {
 	return f.Close()
 }
 
-func writeFeeds(cfg *config.Config, pages []*content.Page) error {
+func writeFeeds(cfg *config.Config, pages content.Pages) error {
 	b := rss.NewBuilder(cfg)
-	for _, f := range rss.DefaultFeeds() {
+	for _, f := range rss.DefaultFeeds(cfg) {
 		b.AddFeed(f)
 	}
 
@@ -243,34 +300,4 @@ func resetSite(dir string) error {
 		return err
 	}
 	return os.MkdirAll(dir, 0o755)
-}
-
-func dedupePages(in []*content.Page) []*content.Page {
-	seen := make(map[string]bool)
-	out := make([]*content.Page, 0, len(in))
-	for _, p := range in {
-		if seen[p.URL] {
-			continue
-		}
-		seen[p.URL] = true
-		out = append(out, p)
-	}
-	sort.Slice(out, func(i, j int) bool { return out[i].Title < out[j].Title })
-	return out
-}
-
-func filterKind(pages []*content.Page, k content.Kind) []*content.Page {
-	out := make([]*content.Page, 0, len(pages))
-	for _, p := range pages {
-		if p.Kind == k {
-			out = append(out, p)
-		}
-	}
-	return out
-}
-
-func sortByDateDesc(pages []*content.Page) {
-	sort.Slice(pages, func(i, j int) bool {
-		return pages[i].Date.After(pages[j].Date)
-	})
 }

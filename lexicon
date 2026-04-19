@@ -1,9 +1,14 @@
 term,url,source,refs
-Code,/notes/code/,content/notes/code.md,0
+amateur-radio,/projects/amateur-radio/,content/projects/amateur-radio/index.md,0
+code,/notes/code/,content/notes/code.md,1
 e64ec,/projects/e64ec/,content/projects/e64ec.md,0
 e64ec log,/,content/index.md,0
+eyes,/notes/eyes/,content/notes/eyes.md,0
+ft-891,/projects/amateur-radio/ft-891/,content/projects/amateur-radio/ft-891.md,0
 glerp,/projects/glerp/,content/projects/glerp.md,0
 hello,/log/2026-04-18-hello/,content/log/2026-04-18-hello.md,0
-lexicon,/terms/lexicon/,content/terms/lexicon.md,0
-templ,/terms/templ/,content/terms/templ.md,0
-term index,/terms/lexicon/,content/terms/lexicon.md,0
+lexicon,/terms/lexicon/,content/terms/lexicon.md,3
+markdown files,/projects/e64ec/,content/projects/e64ec.md,2
+templ,/terms/templ/,content/terms/templ.md,1
+term index,/terms/lexicon/,content/terms/lexicon.md,1
+terms,/terms/,content/terms/index.md,3

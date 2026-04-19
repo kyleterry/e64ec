@@ -1,0 +1,29 @@
+package ui
+
+import "go.e64ec.com/e64ec/internal/lexicon"
+
+templ Sitemap(site Site, view SitemapView) {
+	@Layout(site, "sitemap") {
+		<section id="sitemap">
+			<h1>sitemap</h1>
+			<ul id="sitemap-tree">
+				for _, n := range view.Nodes {
+					@sitemapNode(n)
+				}
+			</ul>
+		</section>
+	}
+}
+
+templ sitemapNode(n *lexicon.SitemapNode) {
+	<li>
+		<a href={ templ.SafeURL(n.URL) }>{ n.Title }</a>
+		if len(n.Children) > 0 {
+			<ul>
+				for _, c := range n.Children {
+					@sitemapNode(c)
+				}
+			</ul>
+		}
+	</li>
+}

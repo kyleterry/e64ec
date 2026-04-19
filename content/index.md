@@ -1,7 +1,7 @@
 ---
 title: e64ec log
 summary: Personal wiki and log.
-date: 2026-04-18
+banner: /assets/img/meta-banner-power-supply.jpg
 ---
 
 Notes, projects, and a growing lexicon. This site is generated from plain

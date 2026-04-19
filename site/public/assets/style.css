@@ -1,27 +1,38 @@
 
 /* font-family: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace; */
 :root {
-  --fg: #1a1a1a;
-  --fg-muted: #555;
-  --bg: #fafaf7;
-  --accent: #5a2a82;
-  --rule: #e2e2dc;
-  --max-width: 42rem;
+  --fg: #ebdbb2;
+  --fg-muted: #a89984;
+  --bg: #0d0e0f;
+  --accent: #fe8019;
+  --rule: #3c3836;
+  --code-bg: #1d2021;
+  --code-border: #504945;
+  --code-fg: #fb4934;
+  --max-width: 52rem;
   --font-family: serif;
   --code-font-family: Courier, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --fg: #e8e8e4;
-    --fg-muted: #9a9a94;
-    --bg: #141414;
-    --accent: #c79dee;
-    --rule: #2a2a28;
+    --fg: #3c3836;
+    --fg-muted: #7c6f64;
+    --bg: #d5c4a1;
+    --accent: #af3a03;
+    --rule: #bdae93;
+    --code-bg: #bdae93;
+    --code-border: #a89984;
+    --code-fg: #9d0006;
   }
 }
 
 * { box-sizing: border-box; }
+
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
 
 html, body {
   margin: 0;
@@ -39,21 +50,17 @@ body {
   min-height: 100vh;
 }
 
-code {
-  font-family: var(--code-font-family);
-  white-space: pre;
-}
-
-.site-header,
-.site-footer,
-.site-main {
+body > header,
+body > footer,
+main {
   max-width: var(--max-width);
   width: 100%;
-  margin: 0 auto;
+  margin-left: clamp(1rem, 8vw, 8rem);
+  margin-right: auto;
   padding: 1.25rem 1rem;
 }
 
-.site-header {
+body > header {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -62,26 +69,26 @@ code {
   border-bottom: 1px solid var(--rule);
 }
 
-.site-title {
+#site-title {
   font-weight: 600;
   color: var(--fg);
   text-decoration: none;
 }
 
-.site-nav {
+nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.site-nav a {
+nav a {
   color: var(--fg-muted);
   text-decoration: none;
 }
 
-.site-nav a:hover { color: var(--accent); }
+nav a:hover { color: var(--accent); }
 
-.site-footer {
+body > footer {
   border-top: 1px solid var(--rule);
   color: var(--fg-muted);
   font-size: 0.85rem;
@@ -101,20 +108,35 @@ h3 { font-size: 1.05rem; }
 p, ul, ol, pre, blockquote { margin: 0 0 1em; }
 
 code {
-  background: var(--rule);
-  padding: 0.1em 0.3em;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  padding: 0.1em 0.35em;
   border-radius: 3px;
-  font-size: 0.95em;
+  font-size: 0.9em;
+  font-family: var(--code-font-family);
 }
 
 pre {
-  background: var(--rule);
-  padding: 0.75rem 1rem;
+  background: var(--code-bg);
+  color: var(--fg);
+  border: 1px solid var(--code-border);
+  padding: 0.9rem 1rem;
   overflow-x: auto;
   border-radius: 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  tab-size: 2;
 }
 
-pre code { background: transparent; padding: 0; }
+pre code {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  white-space: pre;
+}
 
 blockquote {
   border-left: 3px solid var(--rule);
@@ -122,14 +144,23 @@ blockquote {
   color: var(--fg-muted);
 }
 
-.page-header { margin-bottom: 1.5rem; }
-.page-meta {
+main figure {
+  margin: 0 0 2rem;
+}
+
+main figure img {
+  display: block;
+  border-radius: 4px;
+}
+
+article > header { margin-bottom: 1.5rem; }
+#page-meta {
   color: var(--fg-muted);
   font-size: 0.85rem;
   margin: 0;
 }
 
-.tags {
+#tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -139,7 +170,7 @@ blockquote {
   font-size: 0.8rem;
 }
 
-.tags li {
+#tags li {
   padding: 0.1rem 0.4rem;
   border: 1px solid var(--rule);
   border-radius: 3px;
@@ -173,7 +204,7 @@ blockquote {
   font-size: 0.95rem;
 }
 
-.lexicon-list {
+#lexicon-list {
   list-style: none;
   padding: 0;
   display: grid;
@@ -187,13 +218,13 @@ blockquote {
   margin-left: 0.25rem;
 }
 
-.page-backlinks {
+article > footer {
   margin-top: 3rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--rule);
 }
 
-.page-backlinks h2 {
+article > footer h2 {
   font-size: 0.9rem;
   color: var(--fg-muted);
   text-transform: uppercase;
@@ -201,7 +232,7 @@ blockquote {
   margin-bottom: 0.75rem;
 }
 
-.page-backlinks ul {
+article > footer ul {
   list-style: none;
   padding: 0;
   display: flex;

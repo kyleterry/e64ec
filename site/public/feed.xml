@@ -3,16 +3,30 @@
   <channel>
     <title>e64ec log</title>
     <link>https://e64ec.com</link>
-    <description>Updates from e64ec.com</description>
+    <description>Updates from https://e64ec.com</description>
     <language>en</language>
-    <lastBuildDate>Sun, 19 Apr 2026 04:48:41 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Apr 2026 08:35:31 +0000</lastBuildDate>
     <generator>e64ec</generator>
+    <item>
+      <title>eyes</title>
+      <link>https://e64ec.com/notes/eyes/</link>
+      <guid isPermaLink="true">https://e64ec.com/notes/eyes/</guid>
+      <pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
+      <description>scary scary.</description>
+    </item>
     <item>
       <title>hello</title>
       <link>https://e64ec.com/log/2026-04-18-hello/</link>
       <guid isPermaLink="true">https://e64ec.com/log/2026-04-18-hello/</guid>
       <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
       <description>First post on the new generator.</description>
+    </item>
+    <item>
+      <title>code</title>
+      <link>https://e64ec.com/notes/code/</link>
+      <guid isPermaLink="true">https://e64ec.com/notes/code/</guid>
+      <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
+      <description>code code code.</description>
     </item>
   </channel>
 </rss>

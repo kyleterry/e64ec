@@ -1,0 +1,21 @@
+package ui
+
+import "go.e64ec.com/e64ec/internal/content"
+
+templ PageList(pages []*content.Page) {
+	<ul class="index-list">
+		for _, p := range pages {
+			<li>
+				<a href={ templ.SafeURL(p.URL) }>{ p.Title }</a>
+				if !p.Date.IsZero() {
+					<time datetime={ p.Date.Format("2006-01-02") }>
+						{ p.Date.Format("2006-01-02") }
+					</time>
+				}
+				if p.Summary != "" {
+					<p class="summary">{ p.Summary }</p>
+				}
+			</li>
+		}
+	</ul>
+}
