@@ -59,12 +59,6 @@ func (l *Lexicon) TopEntries(n int) []*Entry {
 	return out
 }
 
-// Lookup returns an entry by its lowercase key.
-func (l *Lexicon) Lookup(key string) (*Entry, bool) {
-	e, ok := l.byKey[strings.ToLower(key)]
-	return e, ok
-}
-
 // Link scans rendered HTML and replaces the first occurrence of each term
 // with a link to its defining page. The page's own defining term(s) are
 // skipped. Anchors, code, and pre nodes are not rewritten.
