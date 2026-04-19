@@ -1,0 +1,44 @@
+# Config file for [Air](https://github.com/cosmtrek/air) in TOML format
+
+# Working directory
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Just run the task that generates the site and builds the server
+  cmd = "task generate build:server"
+  # Binary file yields from `cmd`.
+  bin = "./e64ec-server"
+  # Watch these filename extensions.
+  include_ext = ["go", "templ", "md", "css", "yaml", "yml", "txt"]
+  # Ignore these filename extensions or directories.
+  exclude_dir = ["site/public", "tmp", "node_modules", ".git"]
+  # Watch these directories if you specified.
+  include_dir = []
+  # Exclude files.
+  exclude_file = []
+  # This log file places in your tmp_dir.
+  log = "air.log"
+  # It's not necessary to trigger build each time file changes if it's too frequent.
+  delay = 1000 # ms
+  # Stop running old binary when build errors occur.
+  stop_on_error = true
+  # Send Interrupt signal before killing main process.
+  send_interrupt = true
+  # Delay after sending Interrupt signal.
+  kill_delay = 500 # ms
+
+[log]
+  # Show log time
+  time = false
+
+[color]
+  # Customize each part's color. If no color found, use the raw log message.
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+
+[misc]
+  # Delete tmp directory on exit
+  clean_on_exit = true
