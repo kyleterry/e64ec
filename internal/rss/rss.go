@@ -61,15 +61,18 @@ func (b *Builder) Build(id string, pages content.Pages) ([]byte, error) {
 		if feed.Filter != nil && !feed.Filter(p) {
 			continue
 		}
+
 		if p.Date.IsZero() {
 			continue
 		}
+
 		items = append(items, rssItem{
 			Title:       p.Title,
 			Link:        joinURL(b.cfg.BaseURL, p.URL),
 			GUID:        guid{Value: joinURL(b.cfg.BaseURL, p.URL), IsPermaLink: "true"},
 			PubDate:     p.Date.UTC().Format(time.RFC1123Z),
 			Description: strings.TrimSpace(p.Summary),
+			Categories:  p.Tags,
 		})
 	}
 
@@ -122,9 +125,11 @@ func DefaultFeeds(cfg *config.Config) []Feed {
 				if p.Index {
 					return false
 				}
+
 				if p.Feed {
 					return true
 				}
+
 				return included[p.Section]
 			},
 		},
@@ -154,11 +159,12 @@ type rssChannel struct {
 }
 
 type rssItem struct {
-	Title       string `xml:"title"`
-	Link        string `xml:"link"`
-	GUID        guid   `xml:"guid"`
-	PubDate     string `xml:"pubDate"`
-	Description string `xml:"description,omitempty"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+	GUID        guid     `xml:"guid"`
+	PubDate     string   `xml:"pubDate"`
+	Description string   `xml:"description,omitempty"`
+	Categories  []string `xml:"category,omitempty"`
 }
 
 type guid struct {
