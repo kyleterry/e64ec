@@ -10,11 +10,13 @@ type Config struct {
 	Description  string
 	Author       string
 	Language     string
+	Categories   []string
 	ContentDir   string
 	AssetsDir    string
 	SiteDir      string
 	LexiconFile  string
 	FeedSections []string
+	PrettyURLs   bool
 	BuildTime    time.Time
 }
 
@@ -22,15 +24,17 @@ type Config struct {
 func Default() *Config {
 	return &Config{
 		BaseURL:      "https://e64ec.com",
-		Title:        "e64ec log",
+		Title:        "e64ec",
 		Description:  "Personal wiki and log.",
 		Author:       "kt",
-		Language:     "en",
+		Language:     "en-us",
+		Categories:   []string{"wiki", "weblog"},
 		ContentDir:   "content",
 		AssetsDir:    "assets",
 		SiteDir:      "site/public",
 		LexiconFile:  "lexicon",
 		FeedSections: []string{"log"},
+		PrettyURLs:   true,
 		BuildTime:    time.Now().UTC(),
 	}
 }

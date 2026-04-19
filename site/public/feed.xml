@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>e64ec log</title>
+    <title>e64ec</title>
     <link>https://e64ec.com</link>
     <description>Updates from https://e64ec.com</description>
-    <language>en</language>
-    <lastBuildDate>Sun, 19 Apr 2026 08:35:31 +0000</lastBuildDate>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 19 Apr 2026 17:19:45 +0000</lastBuildDate>
     <generator>e64ec</generator>
+    <category>wiki</category>
+    <category>weblog</category>
     <item>
       <title>eyes</title>
       <link>https://e64ec.com/notes/eyes/</link>

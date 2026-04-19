@@ -30,6 +30,7 @@ func main() {
 	flag.StringVar(&cfg.SiteDir, "out", cfg.SiteDir, "output directory")
 	flag.StringVar(&cfg.LexiconFile, "lexicon", cfg.LexiconFile, "lexicon CSV output path")
 	flag.StringVar(&cfg.BaseURL, "base-url", cfg.BaseURL, "canonical base URL")
+	flag.BoolVar(&cfg.PrettyURLs, "pretty-urls", cfg.PrettyURLs, "use directory-based (pretty) URLs")
 	flag.Parse()
 
 	if err := run(cfg); err != nil {
@@ -38,7 +39,7 @@ func main() {
 }
 
 func run(cfg *config.Config) error {
-	rawPages, err := content.NewLoader(cfg.ContentDir).Load()
+	rawPages, err := content.NewLoader(cfg.ContentDir, cfg.PrettyURLs).Load()
 	if err != nil {
 		return fmt.Errorf("load content: %w", err)
 	}

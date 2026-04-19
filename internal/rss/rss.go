@@ -82,6 +82,7 @@ func (b *Builder) Build(id string, pages content.Pages) ([]byte, error) {
 			Link:          b.cfg.BaseURL,
 			Description:   feed.Description,
 			Language:      b.cfg.Language,
+			Categories:    b.cfg.Categories,
 			LastBuildDate: b.cfg.BuildTime.Format(time.RFC1123Z),
 			Generator:     "e64ec",
 			Items:         items,
@@ -148,6 +149,7 @@ type rssChannel struct {
 	Language      string    `xml:"language,omitempty"`
 	LastBuildDate string    `xml:"lastBuildDate,omitempty"`
 	Generator     string    `xml:"generator,omitempty"`
+	Categories    []string  `xml:"category,omitempty"`
 	Items         []rssItem `xml:"item"`
 }
 

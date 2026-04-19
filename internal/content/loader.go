@@ -15,12 +15,14 @@ import (
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
+	"go.abhg.dev/goldmark/mermaid"
 )
 
 // Loader walks a content directory and produces Pages.
 type Loader struct {
-	root     string
-	markdown goldmark.Markdown
+	root       string
+	markdown   goldmark.Markdown
+	PrettyURLs bool
 }
 
 // Load reads and returns all pages under l.root sorted by URL.
@@ -102,7 +104,7 @@ func (l *Loader) loadFile(abs string) (*Page, error) {
 
 	page.Section = sectionFor(rel)
 	page.Index = isIndexFile(rel)
-	page.URL, page.OutputPath = routeFor(rel, fm.Slug)
+	page.URL, page.OutputPath = l.routeFor(rel, fm.Slug)
 
 	ext := strings.ToLower(filepath.Ext(abs))
 	switch ext {
@@ -148,7 +150,7 @@ func isIndexFile(rel string) bool {
 	return base == "index.md" || base == "index.html" || base == "index.htm" || base == "index.markdown"
 }
 
-func routeFor(rel, slug string) (url, outputPath string) {
+func (l *Loader) routeFor(rel, slug string) (url, outputPath string) {
 	ext := filepath.Ext(rel)
 	withoutExt := strings.TrimSuffix(rel, ext)
 	base := path.Base(withoutExt)
@@ -162,18 +164,25 @@ func routeFor(rel, slug string) (url, outputPath string) {
 		if dir == "." || dir == "" {
 			return "/", "index.html"
 		}
-		return "/" + dir + "/", path.Join(dir, "index.html")
+		if l.PrettyURLs {
+			return "/" + dir + "/", path.Join(dir, "index.html")
+		}
+		return "/" + dir + ".html", path.Join(dir + ".html")
 	}
 
 	urlPath := "/"
 	if dir != "." && dir != "" {
 		urlPath += dir + "/"
 	}
-	urlPath += base + "/"
 
-	out := path.Join(strings.TrimPrefix(urlPath, "/"), "index.html")
+	if l.PrettyURLs {
+		urlPath += base + "/"
+		out := path.Join(strings.TrimPrefix(urlPath, "/"), "index.html")
+		return urlPath, out
+	}
 
-	return urlPath, out
+	urlPath += base + ".html"
+	return urlPath, strings.TrimPrefix(urlPath, "/")
 }
 
 func deriveTitle(rel string) string {
@@ -191,12 +200,12 @@ func deriveTitle(rel string) string {
 }
 
 // NewLoader builds a content loader rooted at root.
-func NewLoader(root string) *Loader {
+func NewLoader(root string, prettyURLs bool) *Loader {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, extension.Footnote, extension.Typographer),
+		goldmark.WithExtensions(extension.GFM, extension.Footnote, extension.Typographer, &mermaid.Extender{}),
 		goldmark.WithParserOptions(parser.WithAutoHeadingID()),
 		goldmark.WithRendererOptions(html.WithUnsafe()),
 	)
 
-	return &Loader{root: root, markdown: md}
+	return &Loader{root: root, markdown: md, PrettyURLs: prettyURLs}
 }
