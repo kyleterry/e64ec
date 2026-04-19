@@ -1,4 +1,5 @@
 term,url,source,refs
+DSLs,/projects/glerp/,src/content/projects/glerp.md,0
 amateur-radio,/projects/amateur-radio/,src/content/projects/amateur-radio/index.md,0
 code,/notes/code/,src/content/notes/code.md,1
 e64ec,/projects/e64ec/,src/content/projects/e64ec.md,0
@@ -10,6 +11,7 @@ hello,/log/2026-04-18-hello/,src/content/log/2026-04-18-hello.md,0
 lexicon,/terms/lexicon/,src/content/terms/lexicon.md,3
 markdown files,/projects/e64ec/,src/content/projects/e64ec.md,2
 notes,/notes/,src/content/notes/index.md,3
+scheme,/projects/glerp/,src/content/projects/glerp.md,0
 templ,/terms/templ/,src/content/terms/templ.md,1
 term index,/terms/lexicon/,src/content/terms/lexicon.md,1
 terms,/terms/,src/content/terms/index.md,3
