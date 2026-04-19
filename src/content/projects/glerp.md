@@ -2,6 +2,7 @@
 title: glerp
 summary: a scuffed scheme interpreter written in go
 tags: [go, scheme]
+terms: ["DSLs", "scheme"]
 ---
 
 `glerp` is a scheme interpreter I wrote in Go. I designed it to easily
@@ -10,4 +11,4 @@ full blown web server. You can create special forms or builtins using Go
 functions, or you can write your own syntax using the macro system
 (`define-syntax` with `syntax-case` and `syntax-rule`).
 
-Maybe I can use it do generate html from markdown files some day.
+Maybe I can use it to generate html from markdown files some day.
