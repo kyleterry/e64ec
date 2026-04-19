@@ -1,0 +1,67 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Generate site and start server
+    cmds:
+      - task: generate
+      - task: serve
+
+  templ:
+    desc: Generate Go code from Templ files
+    sources:
+      - '**/*.templ'
+    generates:
+      - '**/*_templ.go'
+    cmds:
+      - templ generate
+
+  generate:
+    desc: Build the static site from content/
+    deps: [templ]
+    sources:
+      - 'content/**/*'
+      - 'assets/**/*'
+      - 'internal/**/*'
+      - 'cmd/e64ec-generate/**/*'
+    generates:
+      - 'site/public/**/*'
+    cmds:
+      - go run ./cmd/e64ec-generate
+
+  build:server:
+    desc: Build the e64ec-server binary
+    sources:
+      - 'site/public/**/*'
+      - 'cmd/e64ec-server/**/*'
+    generates:
+      - 'e64ec-server'
+    cmds:
+      - go build -o e64ec-server ./cmd/e64ec-server
+
+  build:generate:
+    desc: Build the e64ec-generate binary
+    deps: [templ]
+    cmds:
+      - go build -o e64ec-generate ./cmd/e64ec-generate
+
+  build:
+    desc: Build all binaries
+    deps: [build:generate, build:server]
+
+  serve:
+    desc: Run the e64ec-server
+    deps: [build:server]
+    cmds:
+      - ./e64ec-server
+
+  dev:
+    desc: Run the server with live reloading
+    cmds:
+      - air
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - rm -f e64ec-server e64ec-generate
+      - rm -rf site/public/*

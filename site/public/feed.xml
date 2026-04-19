@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>e64ec log</title>
+    <link>https://e64ec.com</link>
+    <description>Updates from e64ec.com</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 19 Apr 2026 04:48:41 +0000</lastBuildDate>
+    <generator>e64ec</generator>
+    <item>
+      <title>hello</title>
+      <link>https://e64ec.com/log/2026-04-18-hello/</link>
+      <guid isPermaLink="true">https://e64ec.com/log/2026-04-18-hello/</guid>
+      <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
+      <description>First post on the new generator.</description>
+    </item>
+  </channel>
+</rss>

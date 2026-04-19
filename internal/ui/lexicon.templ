@@ -1,0 +1,21 @@
+package ui
+
+import "fmt"
+
+templ LexiconIndex(site Site, view LexiconView) {
+	@Layout(site, "terms") {
+		<section class="lexicon">
+			<h1>terms</h1>
+			<ul class="lexicon-list">
+				for _, e := range view.Entries {
+					<li>
+						<a href={ templ.SafeURL(e.URL) }>{ e.Canonical }</a>
+						if len(e.References) > 0 {
+							<span class="ref-count">({ fmt.Sprint(len(e.References)) })</span>
+						}
+					</li>
+				}
+			</ul>
+		</section>
+	}
+}

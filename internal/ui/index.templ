@@ -1,0 +1,31 @@
+package ui
+
+templ Index(site Site, heading string, sections []IndexSection) {
+	@Layout(site, heading) {
+		<section class="index">
+			<h1>{ heading }</h1>
+			for _, s := range sections {
+				<section class="index-section">
+					if s.Title != "" {
+						<h2>{ s.Title }</h2>
+					}
+					<ul class="index-list">
+						for _, p := range s.Pages {
+							<li>
+								<a href={ templ.SafeURL(p.URL) }>{ p.Title }</a>
+								if !p.Date.IsZero() {
+									<time datetime={ p.Date.Format("2006-01-02") }>
+										{ p.Date.Format("2006-01-02") }
+									</time>
+								}
+								if p.Summary != "" {
+									<p class="summary">{ p.Summary }</p>
+								}
+							</li>
+						}
+					</ul>
+				</section>
+			}
+		</section>
+	}
+}
