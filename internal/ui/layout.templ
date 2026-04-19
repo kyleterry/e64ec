@@ -1,5 +1,25 @@
 package ui
 
+templ Header(site Site) {
+	<header>
+		<a id="site-title" href="/">{ site.Title }</a>
+		<nav aria-label="primary">
+			for _, link := range site.Nav {
+				<a href={ templ.SafeURL(link.URL) }>{ link.Title }</a>
+			}
+		</nav>
+	</header>
+}
+
+templ Footer(site Site) {
+	<footer>
+		<p>
+			built { site.Now.Format("2006-01-02") }
+			· <a href="/sitemap/">sitemap</a>
+		</p>
+	</footer>
+}
+
 templ Layout(site Site, title string) {
 	<!DOCTYPE html>
 	<html lang={ site.Language }>
@@ -8,7 +28,7 @@ templ Layout(site Site, title string) {
 			<meta name="viewport" content="width=device-width,initial-scale=1"/>
 			<title>
 				if title != "" {
-					{ title } — { site.Title }
+					{ title } - { site.Title }
 				} else {
 					{ site.Title }
 				}
@@ -18,23 +38,11 @@ templ Layout(site Site, title string) {
 			<link rel="stylesheet" href="/assets/style.css"/>
 		</head>
 		<body>
-			<header>
-				<a id="site-title" href="/">{ site.Title }</a>
-				<nav aria-label="primary">
-					for _, link := range site.Nav {
-						<a href={ templ.SafeURL(link.URL) }>{ link.Title }</a>
-					}
-				</nav>
-			</header>
+			@Header(site)
 			<main>
 				{ children... }
 			</main>
-			<footer>
-				<p>
-					built { site.Now.Format("2006-01-02") }
-					· <a href="/sitemap/">sitemap</a>
-				</p>
-			</footer>
+			@Footer(site)
 		</body>
 	</html>
 }
