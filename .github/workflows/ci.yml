@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: set-up-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: install-templ
+        run: go install github.com/a-h/templ/cmd/templ@latest
+
+      - name: install-goimports
+        run: go install golang.org/x/tools/cmd/goimports@latest
+
+      - name: install-golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          install-mode: binary
+          skip-cache: true
+          skip-pkg-cache: true
+          skip-save-cache: true
+
+      - name: generate-templ
+        run: templ generate
+
+      - name: fmt-fix
+        run: goimports -w .
+
+      - name: vet
+        run: go vet ./...
+
+      - name: lint
+        run: golangci-lint run ./...
+
+      - name: build
+        run: go build ./...
+
+      - name: generate-site
+        run: go run ./cmd/e64ec-generate
+
+      - name: check-dirty
+        run: |
+          dirty=$(git diff --name-only | grep -v '^site/public' || true)
+          untracked=$(git ls-files --others --exclude-standard | grep -v '^site/public' || true)
+          if [ -n "$dirty" ] || [ -n "$untracked" ]; then
+            echo "Working tree dirty after generate/fmt:"
+            echo "$dirty"
+            echo "$untracked"
+            exit 1
+          fi
