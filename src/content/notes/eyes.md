@@ -1,6 +1,6 @@
 ---
 title: eyes
-summary: scary scary.
+summary: scary scary
 date: 2026-04-19
 feed: true
 ---
@@ -8,3 +8,5 @@ feed: true
 scary eyes but no so scary teeth. scary scary scary.
 
 ![sc ar y](/assets/notes/eyes.png)
+
+where will the eyes go next?? is it frog?
