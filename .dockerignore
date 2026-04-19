@@ -1,0 +1,9 @@
+site/public/
+e64ec-generate
+e64ec-server
+tmp/
+.direnv/
+.claude/
+.air.toml
+AGENTS.md
+CLAUDE.md
