@@ -106,6 +106,10 @@ func (l *Loader) loadFile(abs string) (*Page, error) {
 	page.Index = isIndexFile(rel)
 	page.URL, page.OutputPath = l.routeFor(rel, fm.Slug)
 
+	if page.Index {
+		page.ShowChildren = fm.ShowChildren
+	}
+
 	ext := strings.ToLower(filepath.Ext(abs))
 	switch ext {
 	case ".md", ".markdown":

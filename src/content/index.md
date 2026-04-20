@@ -2,6 +2,7 @@
 title: scuffed wiki
 summary: personal and very scuffed wiki, log and notebook
 banner: /assets/img/meta-banner-newsprint-frog.jpg
+show_children: false
 ---
 
 Notes, projects, and a growing lexicon. This site is generated from plain

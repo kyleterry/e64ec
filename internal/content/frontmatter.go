@@ -40,6 +40,8 @@ func parseFrontmatter(raw []byte) (Frontmatter, error) {
 		return fm, nil
 	}
 
+	fm.ShowChildren = true
+
 	if err := yaml.Unmarshal(raw, &fm); err != nil {
 		return fm, fmt.Errorf("yaml: %w", err)
 	}

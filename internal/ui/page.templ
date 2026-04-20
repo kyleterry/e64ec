@@ -30,7 +30,7 @@ templ Page(site Site, view PageView) {
 			<div class="body">
 				@templ.Raw(string(view.Body))
 			</div>
-			if len(view.Children) > 0 {
+			if len(view.Children) > 0 && view.Page.ShowChildren {
 				<section id="page-children">
 					@PageList(view.Children)
 				</section>

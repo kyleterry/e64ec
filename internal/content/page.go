@@ -11,41 +11,43 @@ import (
 
 // Frontmatter is the YAML metadata parsed from the top of a markdown file.
 type Frontmatter struct {
-	Title       string    `yaml:"title"`
-	Summary     string    `yaml:"summary"`
-	Date        time.Time `yaml:"date"`
-	Updated     time.Time `yaml:"updated"`
-	Slug        string    `yaml:"slug"`
-	Banner      string    `yaml:"banner"`
-	Tags        []string  `yaml:"tags"`
-	Terms       []string  `yaml:"terms"`
-	IncludeTerm string    `yaml:"include_term"`
-	Draft       bool      `yaml:"draft"`
-	Feed        bool      `yaml:"feed"`
-	Lexicon     bool      `yaml:"lexicon"`
-	Sort        string    `yaml:"sort"`
+	Title        string    `yaml:"title"`
+	Summary      string    `yaml:"summary"`
+	Date         time.Time `yaml:"date"`
+	Updated      time.Time `yaml:"updated"`
+	Slug         string    `yaml:"slug"`
+	ShowChildren bool      `yaml:"show_children,omitempty"`
+	Banner       string    `yaml:"banner"`
+	Tags         []string  `yaml:"tags"`
+	Terms        []string  `yaml:"terms"`
+	IncludeTerm  string    `yaml:"include_term"`
+	Draft        bool      `yaml:"draft"`
+	Feed         bool      `yaml:"feed"`
+	Lexicon      bool      `yaml:"lexicon"`
+	Sort         string    `yaml:"sort"`
 }
 
 // Page is a fully loaded and rendered content page.
 type Page struct {
-	Section     string
-	Source      string
-	URL         string
-	OutputPath  string
-	Title       string
-	Summary     string
-	Banner      string
-	Date        time.Time
-	Updated     time.Time
-	Tags        []string
-	Terms       []string
-	IncludeTerm string
-	Draft       bool
-	Feed        bool
-	Lexicon     bool
-	Sort        string
-	Index       bool
-	Body        template.HTML
+	Section      string
+	Source       string
+	URL          string
+	OutputPath   string
+	Title        string
+	Summary      string
+	Banner       string
+	Date         time.Time
+	Updated      time.Time
+	Tags         []string
+	Terms        []string
+	IncludeTerm  string
+	Draft        bool
+	Feed         bool
+	Lexicon      bool
+	Sort         string
+	Index        bool
+	ShowChildren bool
+	Body         template.HTML
 }
 
 // IsHome reports whether this page is the site root.
