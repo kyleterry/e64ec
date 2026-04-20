@@ -62,6 +62,14 @@ main {
   padding: 0rem 1rem;
 }
 
+main {
+    padding: 0;
+}
+
+main > article {
+  padding: 0rem 1rem;
+}
+
 @media (max-width: 600px) {
   body > header,
   body > footer,
@@ -110,9 +118,11 @@ nav a {
 nav a:hover { color: var(--accent); }
 
 body > footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  /* flex-wrap: wrap; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+  justify-content: space-between;
   border-top: 1px solid var(--rule);
   color: var(--fg-muted);
   font-size: 0.85rem;

@@ -2,12 +2,12 @@ package ui
 
 templ Page(site Site, view PageView) {
 	@Layout(site, view.Page.Title) {
+		if view.Page.Banner != "" {
+			<figure>
+				<img src={ view.Page.Banner } alt=""/>
+			</figure>
+		}
 		<article>
-			if view.Page.Banner != "" {
-				<figure>
-					<img src={ view.Page.Banner } alt=""/>
-				</figure>
-			}
 			<header>
 				<h1>{ view.Page.Title }</h1>
 				if !view.Page.Date.IsZero() || view.Page.Section != "" {
