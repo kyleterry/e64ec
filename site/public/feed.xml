@@ -5,18 +5,11 @@
     <link>https://e64ec.com</link>
     <description>Updates from https://e64ec.com</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Apr 2026 05:46:17 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Apr 2026 19:40:25 +0000</lastBuildDate>
     <generator>e64ec</generator>
     <category>wiki</category>
     <category>weblog</category>
     <category>notebook</category>
-    <item>
-      <title>eyes</title>
-      <link>https://e64ec.com/notes/eyes/</link>
-      <guid isPermaLink="true">https://e64ec.com/notes/eyes/</guid>
-      <pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
-      <description>scary scary</description>
-    </item>
     <item>
       <title>hello</title>
       <link>https://e64ec.com/log/2026-04-18-hello/</link>
@@ -24,13 +17,6 @@
       <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
       <description>First post on the new generator.</description>
       <category>meta</category>
-    </item>
-    <item>
-      <title>code</title>
-      <link>https://e64ec.com/notes/code/</link>
-      <guid isPermaLink="true">https://e64ec.com/notes/code/</guid>
-      <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
-      <description>code code code.</description>
     </item>
   </channel>
 </rss>

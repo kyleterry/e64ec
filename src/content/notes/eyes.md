@@ -1,7 +1,6 @@
 ---
 title: eyes
 summary: scary scary
-date: 2026-04-19
 feed: true
 ---
 

@@ -3,6 +3,7 @@ package ui
 
 import (
 	"html/template"
+	"strings"
 	"time"
 
 	"go.e64ec.com/e64ec/internal/config"
@@ -14,11 +15,16 @@ import (
 type Site struct {
 	Title       string
 	Description string
+	Categories  []string
 	BaseURL     string
 	Author      string
 	Language    string
 	Now         time.Time
 	Nav         []NavLink
+}
+
+func (s *Site) Keywords() string {
+	return strings.Join(s.Categories, ",")
 }
 
 // NavLink is a primary site nav entry.
@@ -69,6 +75,7 @@ func SiteFrom(cfg *config.Config, pages content.Pages) Site {
 	return Site{
 		Title:       cfg.Title,
 		Description: cfg.Description,
+		Categories:  cfg.Categories,
 		BaseURL:     cfg.BaseURL,
 		Author:      cfg.Author,
 		Language:    cfg.Language,

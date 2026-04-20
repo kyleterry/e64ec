@@ -1,5 +1,7 @@
 package ui
 
+import "strings"
+
 templ Header(site Site) {
 	<header>
 		<a id="site-title" href="/">{ site.Title }</a>
@@ -32,6 +34,7 @@ templ Layout(site Site, pageTitle string) {
 					{ site.Title }
 				}
 			</title>
+			<meta name="keywords" content={ strings.Join(site.Categories, ", ") }/>
 			<meta property="og:description" content={ site.Description }/>
 			<meta property="og:site_name" content={ site.Title }/>
 			<meta property="og:title" content={ pageTitle }/>

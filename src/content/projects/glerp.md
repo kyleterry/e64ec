@@ -11,7 +11,20 @@ full blown web server. You can create special forms or builtins using Go
 functions, or you can write your own syntax using the macro system
 (`define-syntax` with `syntax-case` and `syntax-rules`).
 
+```scheme
+(define-syntax unless
+  (syntax-rules ()
+    [(_ test body ...)
+     (if (not test) (begin body ...))]))
+```
+
 Maybe I can use it to generate html from markdown files some day.
+
+```scheme
+(generate '((p "this could go hard")
+            (hr)
+            (img {"src" "/this/too.png})))
+```
 
 I think Scheme is one of my favorite language. I love the simplicity compared to
 many of the Lisps. It actually wasn't too bad implementing a good chunk of the
