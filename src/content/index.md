@@ -1,7 +1,7 @@
 ---
 title: scuffed wiki
 summary: personal and very scuffed wiki, log and notebook
-banner: /assets/img/meta-banner-power-supply.jpg
+banner: /assets/img/meta-banner-newsprint-frog.jpg
 ---
 
 Notes, projects, and a growing lexicon. This site is generated from plain
