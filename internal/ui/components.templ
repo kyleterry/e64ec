@@ -6,7 +6,12 @@ templ PageList(pages []*content.Page) {
 	<ul class="index-list">
 		for _, p := range pages {
 			<li>
-				<a href={ templ.SafeURL(p.URL) }>{ p.Title }</a>
+				<a href={ templ.SafeURL(p.URL) }>
+					{ p.Title }
+					if p.Index {
+						/
+					}
+				</a>
 				if !p.Date.IsZero() {
 					<time datetime={ p.Date.Format("2006-01-02") }>
 						{ p.Date.Format("2006-01-02") }

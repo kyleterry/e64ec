@@ -13,30 +13,30 @@ templ Header(site Site) {
 
 templ Footer(site Site) {
 	<footer>
-		<p>
-			built { site.Now.Format("2006-01-02") }
-			· <a href="/sitemap/">sitemap</a>
-		</p>
+		<span>built { site.Now.Format("2006-01-02") }</span>
+		<a href="/sitemap/">sitemap</a>
 		<p>
 			content licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">CC BY-NC-ND 4.0</a>
 		</p>
 	</footer>
 }
 
-templ Layout(site Site, title string) {
+templ Layout(site Site, pageTitle string) {
 	<!DOCTYPE html>
 	<html lang={ site.Language }>
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width,initial-scale=1"/>
 			<title>
-				if title != "" {
-					{ title } - { site.Title }
+				if pageTitle != "" {
+					{ pageTitle } - { site.Title }
 				} else {
 					{ site.Title }
 				}
 			</title>
-			<meta name="description" content={ site.Description }/>
+			<meta property="og:description" content={ site.Description }/>
+			<meta property="og:site_name" content={ site.Title }/>
+			<meta property="og:title" content={ pageTitle }/>
 			<link rel="alternate" type="application/rss+xml" title={ site.Title } href="/feed.xml"/>
 			<link rel="stylesheet" href="/assets/style.css"/>
 		</head>
