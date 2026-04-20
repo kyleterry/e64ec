@@ -1,9 +1,12 @@
 term,url,source,refs
-DSLs,/projects/glerp/,src/content/projects/glerp.md,0
 amateur-radio,/projects/amateur-radio/,src/content/projects/amateur-radio/index.md,0
+bookmark,/projects/booksmk/,src/content/projects/booksmk.md,0
+booksmk,/projects/booksmk/,src/content/projects/booksmk.md,0
 code,/notes/code/,src/content/notes/code.md,1
+dsl,/projects/glerp/,src/content/projects/glerp.md,0
 e64ec,/projects/e64ec/,src/content/projects/e64ec.md,0
 eyes,/notes/eyes/,src/content/notes/eyes.md,0
+feed reader,/projects/booksmk/,src/content/projects/booksmk.md,0
 ft-891,/projects/amateur-radio/ft-891/,src/content/projects/amateur-radio/ft-891.md,0
 glerp,/projects/glerp/,src/content/projects/glerp.md,0
 hello,/log/2026-04-18-hello/,src/content/log/2026-04-18-hello.md,0
