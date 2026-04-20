@@ -10,7 +10,9 @@
   --code-border: #504945;
   --code-fg: #fb4934;
   --max-width: 52rem;
-  --font-family: serif;
+  /* --font-family: serif; */
+  --font-family: monospace;
+  --font-size: 14px;
   --code-font-family: Courier, monospace;
 }
 
@@ -40,7 +42,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: var(--font-size);
   line-height: 1.55;
 }
 
@@ -57,7 +59,7 @@ main {
   width: 100%;
   margin-left: clamp(1rem, 8vw, 8rem);
   margin-right: auto;
-  padding: 1.25rem 1rem;
+  padding: 0rem 1rem;
 }
 
 body > header {
@@ -67,10 +69,11 @@ body > header {
   align-items: baseline;
   justify-content: space-between;
   border-bottom: 1px solid var(--rule);
+  padding: 1.25rem 1rem;
 }
 
 #site-title {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--fg);
   text-decoration: none;
 }
@@ -78,7 +81,7 @@ body > header {
 nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1.3rem;
 }
 
 nav a {
@@ -92,6 +95,7 @@ body > footer {
   border-top: 1px solid var(--rule);
   color: var(--fg-muted);
   font-size: 0.85rem;
+  padding: 1.25rem 1rem;
 }
 
 a { color: var(--accent); }
@@ -101,7 +105,7 @@ a.lex {
 }
 
 h1, h2, h3 { line-height: 1.2; margin: 1.5em 0 0.5em; }
-h1 { font-size: 1.5rem; }
+h1 { font-size: 1.6rem; }
 h2 { font-size: 1.2rem; }
 h3 { font-size: 1.05rem; }
 
@@ -150,7 +154,6 @@ main figure {
 
 main figure img {
   display: block;
-  border-radius: 4px;
 }
 
 article > header { margin-bottom: 1.5rem; }

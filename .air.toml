@@ -6,7 +6,7 @@ tmp_dir = "tmp"
 
 [build]
   # Just run the task that generates the site and builds the server
-  cmd = "task generate build:server"
+  cmd = "task --force generate build:server"
   # Binary file yields from `cmd`.
   bin = "./e64ec-server"
   # Watch these filename extensions.
@@ -16,7 +16,7 @@ tmp_dir = "tmp"
   # Watch these directories if you specified.
   include_dir = []
   # Exclude files.
-  exclude_file = []
+  exclude_regex = ["_templ\\.go"]
   # This log file places in your tmp_dir.
   log = "air.log"
   # It's not necessary to trigger build each time file changes if it's too frequent.
