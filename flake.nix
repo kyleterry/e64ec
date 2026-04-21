@@ -23,12 +23,6 @@
             gnumake
             go-task
           ];
-
-          shellHook = ''
-            export GOPATH="$HOME/go"
-            export PATH="$GOPATH/bin:$PATH"
-            echo "e64ec dev shell: go $(go version | awk '{print $3}'), templ $(templ version 2>/dev/null || echo '?')"
-          '';
         };
       });
 }

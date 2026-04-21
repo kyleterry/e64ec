@@ -62,14 +62,10 @@ type SitemapView struct {
 // generated from the unique top-level sections discovered in pages,
 // in alphabetical order with home first and feed last.
 func SiteFrom(cfg *config.Config, pages content.Pages) Site {
-	nav := []NavLink{{Title: "home", URL: "/"}}
+	nav := []NavLink{{Title: "~", URL: "/"}}
 
 	for _, s := range pages.Sections() {
 		nav = append(nav, NavLink{Title: s, URL: "/" + s + "/"})
-	}
-
-	if pages.HasFeed() {
-		nav = append(nav, NavLink{Title: "feed", URL: "/feed.xml"})
 	}
 
 	return Site{

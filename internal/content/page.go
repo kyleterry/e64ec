@@ -63,6 +63,14 @@ func (p *Page) ModifiedAt() time.Time {
 	return p.Date
 }
 
+func (p Page) DerivedTitle() string {
+	if p.Index {
+		return p.Title + "/"
+	}
+
+	return p.Title
+}
+
 // Pages is a collection of pages with helper methods for common operations.
 type Pages []*Page
 

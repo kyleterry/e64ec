@@ -4,7 +4,9 @@ import "strings"
 
 templ Header(site Site) {
 	<header>
-		<a id="site-title" href="/">{ site.Title }</a>
+		<div id="logo">
+			<a href="/">{ site.Title }</a>
+		</div>
 		<nav aria-label="primary">
 			for _, link := range site.Nav {
 				<a href={ templ.SafeURL(link.URL) }>{ link.Title }</a>
@@ -15,8 +17,11 @@ templ Header(site Site) {
 
 templ Footer(site Site) {
 	<footer>
-		<span>built { site.Now.Format("2006-01-02") }</span>
-		<a href="/sitemap/">sitemap</a>
+		<span>&copy; 2026 Kyle Terry</span>
+		<div>
+			<a href="/sitemap/">sitemap</a>
+			<a href="/feed.xml">rss feed</a>
+		</div>
 		<span>license: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">CC BY-NC-ND 4.0</a></span>
 	</footer>
 }
