@@ -7,7 +7,7 @@ terms: ["programming", "software engineering"]
 
 I write a lot of code. I live the pipedream of ditching GitHub and that has lead
 to my repositories being scattered everywhere. I host bare git repos on my NAS
-at home and I have some in sourcehut, but by and large, mode of my code is on
+at home and I have some in sourcehut, but by and large, most of my code is on
 [GitHub](https://github.com/kyleterry).
 
 I also highlight my favorite projects on that page.

@@ -27,14 +27,16 @@
   }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-img, video, svg {
+:is(img, video, svg) {
   max-width: 100%;
   height: auto;
 }
 
-html, body {
+:is(html, body) {
   margin: 0;
   padding: 0;
   background: var(--bg);
@@ -61,33 +63,34 @@ main {
 }
 
 main {
-    padding: 0;
+  padding: 0;
 }
 
 main > section,
 main > article {
   padding: 0rem 1rem;
+  margin-bottom: 2rem;
 }
 
 main > article hr {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    overflow: visible;
-    padding: 0;
-    border: none;
-    border-top: medium double var(--rule);
-    color: #333;
-    text-align: center;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double var(--rule);
+  color: #333;
+  text-align: center;
 }
 
 main > article hr:after {
-    content: "∇";
-    display: inline-block;
-    position: relative;
-    top: -0.8em;
-    font-size: 1.4em;
-    padding: 0 0.45em;
-    background: var(--bg);
+  content: "∇";
+  display: inline-block;
+  position: relative;
+  top: -0.8em;
+  font-size: 1.4em;
+  padding: 0 0.45em;
+  background: var(--bg);
 }
 
 @media (max-width: 600px) {
@@ -114,7 +117,6 @@ body > header {
   gap: 0.3rem;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--rule);
   padding: 1rem;
 }
 
@@ -138,7 +140,9 @@ nav a {
   text-decoration: none;
 }
 
-nav a:hover { color: var(--accent); }
+nav a:hover {
+  color: var(--accent);
+}
 
 body > footer {
   display: flex;
@@ -146,24 +150,38 @@ body > footer {
   gap: 1rem;
   align-items: baseline;
   justify-content: space-between;
-  border-top: 1px solid var(--rule);
+  border-top: 1px dotted var(--rule);
   color: var(--fg-muted);
   font-size: 0.85rem;
   padding: 1.25rem 1rem;
 }
 
-a { color: var(--accent); }
+a {
+  color: var(--accent);
+}
+
 a.lex {
   border-bottom: 1px dotted var(--accent);
   text-decoration: none;
 }
 
-h1, h2, h3 { line-height: 1.2; margin: 1.5em 0 0.5em; }
-h1 { font-size: 1.6rem; }
-h2 { font-size: 1.2rem; }
-h3 { font-size: 1.05rem; }
+:is(h1, h2, h3) {
+  line-height: 1.2;
+  margin: 1.5em 0 0.5em;
+}
+h1 {
+  font-size: 1.6rem;
+}
+h2 {
+  font-size: 1.2rem;
+}
+h3 {
+  font-size: 1.05rem;
+}
 
-p, ul, ol, pre, blockquote { margin: 0 0 1em; }
+:is(p, pre, blockquote) {
+  margin: 0 0 1em;
+}
 
 code {
   background: var(--code-bg);
@@ -210,7 +228,9 @@ main figure img {
   display: block;
 }
 
-article > header { margin-bottom: 1.5rem; }
+article > header {
+  margin-bottom: 1.5rem;
+}
 #page-meta {
   color: var(--fg-muted);
   font-size: 0.85rem;
@@ -221,7 +241,7 @@ article > header { margin-bottom: 1.5rem; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   margin: 0.5rem 0 0;
   font-size: 0.8rem;
@@ -235,7 +255,7 @@ article > header { margin-bottom: 1.5rem; }
 }
 
 .index-list {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   display: grid;
   gap: 1rem;
@@ -262,7 +282,7 @@ article > header { margin-bottom: 1.5rem; }
 }
 
 #lexicon-list {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
@@ -275,25 +295,46 @@ article > header { margin-bottom: 1.5rem; }
   margin-left: 0.25rem;
 }
 
+#sitemap {
+  ul {
+    display: block;
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+    margin-left: -1.8em;
+  }
+
+  li {
+    list-style-type: none;
+    display: list-item;
+    text-align: match-parent;
+  }
+
+  li:has(ul) > a::after {
+    color: var(--fg);
+    display: inline-block;
+    margin: 0 0.25rem;
+    content: ">";
+  }
+}
+
 article > footer {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-}
+  margin-top: 2rem;
+  border-top: 1px dotted var(--rule);
 
-article > footer h2 {
-  font-size: 0.9rem;
-  color: var(--fg-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
-}
+  h2 {
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
 
-article > footer ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  font-size: 0.9rem;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+  }
 }

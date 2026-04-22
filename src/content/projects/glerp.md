@@ -23,12 +23,12 @@ Maybe I can use it to generate html from markdown files some day.
 ```scheme
 (generate '((p "this could go hard")
             (hr)
-            (img {"src" "/this/too.png})))
+            (img {"src" "/this/too.png"})))
 ```
 
-I think Scheme is one of my favorite language. I love the simplicity compared to
-many of the Lisps. It actually wasn't too bad implementing a good chunk of the
-R7RS standard using Go. There's a few features that still need to be implemented
-to actually call it a true scheme (continuations??).
+I think Scheme is one of my favorite languages. I love the simplicity compared
+to many of the Lisps. It actually wasn't too bad implementing a good chunk of
+the R7RS standard using Go. There's a few features that still need to be
+implemented to actually call it a true scheme (continuations??).
 
 Anyway, check it out on [github](https://github.com/kyleterry/glerp).

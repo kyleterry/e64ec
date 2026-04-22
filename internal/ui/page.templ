@@ -9,16 +9,18 @@ templ Page(site Site, view PageView) {
 		}
 		<article>
 			<header>
-				<h1>{ view.Page.Title }</h1>
-				if !view.Page.Date.IsZero() || view.Page.Section != "" {
-					<p id="page-meta">
-						if !view.Page.Date.IsZero() {
-							<time datetime={ view.Page.Date.Format("2006-01-02") }>
-								{ view.Page.Date.Format("2006-01-02") }
-							</time>
-						}
-					</p>
-				}
+				<hgroup>
+					<h1>{ view.Page.Title }</h1>
+					if !view.Page.Date.IsZero() || view.Page.Section != "" {
+						<p id="page-meta">
+							if !view.Page.Date.IsZero() {
+								<time datetime={ view.Page.Date.Format("2006-01-02") }>
+									{ view.Page.Date.Format("2006-01-02") }
+								</time>
+							}
+						</p>
+					}
+				</hgroup>
 				if len(view.Page.Tags) > 0 {
 					<ul id="tags">
 						for _, tag := range view.Page.Tags {

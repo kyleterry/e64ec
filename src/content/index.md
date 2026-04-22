@@ -15,6 +15,10 @@ markdown files and auto-linked together by a term index.
 - Definitions live in [terms](/terms/).
 - Notes live in [notes](/notes/).
 
+## what is e64ec?
+
+It's the only commit that matters. A guaranteed way out of a sticky situation.
+
 ## other juice?
 
 TBA
