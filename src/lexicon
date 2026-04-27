@@ -5,6 +5,7 @@ booksmk,/projects/booksmk/,src/content/projects/booksmk.md,0
 code,/notes/code/,src/content/notes/code.md,1
 dsl,/projects/glerp/,src/content/projects/glerp.md,0
 e64ec,/projects/e64ec/,src/content/projects/e64ec.md,1
+eurorack,/projects/synth/,src/content/projects/synth/index.md,0
 eyes,/notes/eyes/,src/content/notes/eyes.md,0
 feed reader,/projects/booksmk/,src/content/projects/booksmk.md,0
 frozen blueberry,/notes/life-lessons/,src/content/notes/life-lessons.md,0
@@ -14,6 +15,7 @@ hello,/log/2026-04-18-hello/,src/content/log/2026-04-18-hello.md,1
 lexicon,/terms/lexicon/,src/content/terms/lexicon.md,3
 life lessons,/notes/life-lessons/,src/content/notes/life-lessons.md,0
 markdown files,/projects/e64ec/,src/content/projects/e64ec.md,2
+modular synth,/projects/synth/,src/content/projects/synth/index.md,0
 new site logo,/log/new-logo/,src/content/log/new-logo.md,0
 notes,/notes/,src/content/notes/index.md,3
 painting of a fly,/notes/life-lessons/,src/content/notes/life-lessons.md,0
@@ -22,6 +24,7 @@ projects,/projects/,src/content/projects/index.md,2
 scheme,/projects/glerp/,src/content/projects/glerp.md,0
 scuffed wiki,/,src/content/index.md,0
 software engineering,/notes/code/,src/content/notes/code.md,0
+synth,/projects/synth/,src/content/projects/synth/index.md,0
 templ,/terms/templ/,src/content/terms/templ.md,1
 term index,/terms/lexicon/,src/content/terms/lexicon.md,1
 terms,/terms/,src/content/terms/index.md,3

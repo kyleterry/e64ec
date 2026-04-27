@@ -14,19 +14,6 @@
   --logo-max-width: 175px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --fg: #3c3836;
-    --fg-muted: #7c6f64;
-    --bg: #d5c4a1;
-    --accent: #af3a03;
-    --rule: #bdae93;
-    --code-bg: #bdae93;
-    --code-border: #a89984;
-    --code-fg: #9d0006;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
@@ -285,8 +272,8 @@ article > header {
   list-style-type: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  gap: 0.2rem 0.7rem;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.5rem 0.7rem;
 }
 
 .ref-count {

@@ -254,7 +254,7 @@ func Layout(site Site, pageTitle string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" href=\"/feed.xml\"><link rel=\"stylesheet\" href=\"/assets/style.css\"></head><body>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" href=\"/feed.xml\"><link href=\"/assets/img/icon.png\" type=\"image/png\" rel=\"shortcut icon\"><link rel=\"stylesheet\" href=\"/assets/style.css\"></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
