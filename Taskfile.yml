@@ -14,7 +14,7 @@ tasks:
     generates:
       - '**/*_templ.go'
     cmds:
-      - templ generate
+      - go tool templ generate
 
   generate:
     desc: Build the static site from content/
@@ -28,6 +28,26 @@ tasks:
       - 'site/public/**/*'
     cmds:
       - go run ./cmd/e64ec-generate
+
+  check:
+    desc: Vet, lint, and format all Go sources
+    cmds:
+      - go vet ./...
+      - go tool golangci-lint run ./...
+      - find . -name "*.go" ! -name "*_templ.go" -exec go tool goimports -w {} +
+
+  check:dirty:
+    desc: Fail if working tree is dirty (excluding site/public)
+    cmds:
+      - |
+        dirty=$(git diff --name-only | grep -v '^site/public' || true)
+        untracked=$(git ls-files --others --exclude-standard | grep -v '^site/public' || true)
+        if [ -n "$dirty" ] || [ -n "$untracked" ]; then
+          echo "Working tree dirty after generate/fmt:"
+          echo "$dirty"
+          echo "$untracked"
+          exit 1
+        fi
 
   build:server:
     desc: Build the e64ec-server binary
